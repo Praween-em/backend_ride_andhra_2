@@ -28,7 +28,7 @@ import { HealthModule } from './health/health.module';
 
         // SSL Configuration for production
         ssl: process.env.NODE_ENV === 'production' ? {
-          rejectUnauthorized: process.env.DB_SSL_REJECT_UNAUTHORIZED !== 'false',
+          rejectUnauthorized: false,
         } : false,
       },
 
