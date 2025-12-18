@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: ride-andhra-unified-db
+    env: node
+    region: singapore
+    plan: free
+    branch: master
+    repo: https://github.com/Praween-em/Ride_andhra_unified_db
+    buildCommand: npm install && npm run build
+    startCommand: npm run start:prod
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: DATABASE_URL
+        value: postgresql://ride_andhra_1_user:qFPrArwO1nvClEL81SQm3XMt5vKhunZP@dpg-d4v8oqre5dus73a9e1g0-a/ride_andhra_1
+      - key: JWT_SECRET
+        generateValue: true
+
+databases:
+  - name: ride-andhra-db
+    databaseName: ride_andhra
+    user: ride_andhra_user
+    plan: free
+    region: singapore
