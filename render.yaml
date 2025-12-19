@@ -6,6 +6,7 @@ services:
     plan: free
     branch: master
     repo: https://github.com/Praween-em/Ride_andhra_unified_db
+    rootDir: server
     buildCommand: npm install && npm run build
     startCommand: npm run start:prod
     envVars:
