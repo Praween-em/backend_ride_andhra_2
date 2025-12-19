@@ -31,6 +31,17 @@ export class RidesController {
     );
   }
 
+  @Post('fare-estimate')
+  async getFareEstimates(
+    @Body() body: { distance: number; duration: number }
+  ) {
+    if (!body.distance) {
+      throw new Error('Missing distance');
+    }
+    // Assume distance is in km or handle conversion if consistent with other endpoints
+    return this.ridesService.getFareEstimates(body.distance, body.duration || 0);
+  }
+
   @Get()
   async findAll(): Promise<Ride[]> {
     return this.ridesService.findAll();

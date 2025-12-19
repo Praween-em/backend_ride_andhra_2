@@ -7,11 +7,10 @@ export class FareTier {
     id: string;
 
     @ManyToOne(() => FareSetting)
-    @JoinColumn({ name: 'fare_setting_id' })
+    @JoinColumn({ name: 'vehicle_type', referencedColumnName: 'vehicle_type' })
     fareSetting: FareSetting;
 
-    @Column({ name: 'fare_setting_id' })
-    fareSettingId: string;
+    // Removed conflicting @Column. Access via fareSetting.vehicle_type or use relation in query.
 
     @Column('decimal', { precision: 8, scale: 2 })
     km_from: number;

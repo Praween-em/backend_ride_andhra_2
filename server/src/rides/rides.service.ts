@@ -126,9 +126,9 @@ export class RidesService {
       let fare = baseFare;
 
       // Check for tiered pricing
-      console.log(`[CalculateFare] Checking tiers for setting ID: ${settings.id}`);
+      console.log(`[CalculateFare] Checking tiers for vehicle type: ${vehicleType}`);
       const tiers = await this.fareTierRepository.find({
-        where: { fareSettingId: settings.id },
+        where: { fareSetting: { vehicle_type: vehicleType as any } },
         order: { km_from: 'ASC' }
       });
       console.log(`[CalculateFare] Found ${tiers.length} tiers`);
@@ -167,6 +167,28 @@ export class RidesService {
       console.error('[CalculateFare] Error:', error);
       throw error;
     }
+  }
+
+  /**
+   * Calculate fare estimates for all active vehicle types
+   */
+  async getFareEstimates(distanceKm: number, durationMin: number): Promise<any[]> {
+    const settings = await this.fareSettingRepository.find({ where: { is_active: true } });
+    const estimates = [];
+
+    for (const setting of settings) {
+      try {
+        const fare = await this.calculateFare(distanceKm, durationMin, setting.vehicle_type);
+        estimates.push({
+          vehicleType: setting.vehicle_type,
+          fare: fare,
+          estimatedDuration: durationMin // This could be VehicleType specific if we had average speeds
+        });
+      } catch (error) {
+        console.error(`Error calculating fare for ${setting.vehicle_type}:`, error);
+      }
+    }
+    return estimates;
   }
 
   /**
